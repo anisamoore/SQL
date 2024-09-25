@@ -1,0 +1,32 @@
+SELECT*
+FROM fortune_companies;
+
+#Assign all ompanies in the Technology industry as "care for paid time", "some care", least care"
+SELECT
+company_name,
+CASE 
+  WHEN paid_time_off_days >= 23 THEN 'care for paid time'
+  WHEN paid_time_off_days >= 20 THEN 'some care'
+  ELSE 'least care'
+END as days_off_care
+FROM fortune_companies
+WHERE industry='Technology'
+;
+
+#Total revenue of each industry of at least 250(billions) and what are they?
+SELECT industry, SUM(revenue) as total_revenue
+FROM fortune_companies
+GROUP BY industry
+HAVING total_revenue>= 250
+ORDER BY total_revenue desc;
+
+#Which companies have healthcare benefts and atleast 10 maternity leave weeks?
+SELECT company_name
+FROM fortune_companies
+WHERE maternity_leave_weeks>10
+AND healthcare_benefits=1;
+
+#Which company in the Energy industry has the least amount of employees?
+SELECT company_name, MIN(employees)
+FROM fortune_companies
+WHERE industry= 'Energy';
