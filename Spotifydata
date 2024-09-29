@@ -1,0 +1,39 @@
+#What aartist has the logest duration? How long is it?
+SELECT artist_name,MAX(duration_ms)
+FROM BIT_DB.Spotifydata
+GROUP BY duration_ms
+LIMIT 1;
+
+#Who are the top 10 artists based on popularity?
+SELECT artist_name, MAX(popularity)
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name
+ORDER BY popularity desc
+LIMIT 10;
+
+Which trackhas the least rating for danceability?
+SELECT distinct track_name, MIN(danceability)
+FROM BIT_DB.Spotifydata
+GROUP BY track_name
+ORDER BY danceability asc
+LIMIT 1;
+
+#How many artisits have apopularity score between 85 and 95?
+SELECT COUNT(DISTINCT artist_name) AS total_artists
+FROM BIT_DB.Spotifydata
+WHERE popularity BETWEEN 85 AND 95;
+
+#Calculate the average popularity for the artists in the Spotify data table. 
+Then, for every artist with an average popularity of 90 or above, show their name, their average popularity, and label them as a “Top Star”.
+WITH popularity_average_CTE AS (
+SELECT s.artist_name,
+AVG(s.popularity) AS average_popularity
+FROM SpotifyData s 
+GROUP BY s.artist_name
+)
+ 
+SELECT  artist_name,
+        average_popularity,
+        'Top Star' AS tag
+FROM popularity_average_CTE
+WHERE average_popularity>=90;
